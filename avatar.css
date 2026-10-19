@@ -1,0 +1,28 @@
+/* Interactive character hero */
+.avatar-stage{--avatar-x:0px;--avatar-y:0px;--avatar-rx:0deg;--avatar-ry:0deg;--light-x:66%;--light-y:28%;isolation:isolate;min-height:535px;perspective:1100px;overflow:hidden;border-radius:50% 46% 42% 48%;background:radial-gradient(circle at var(--light-x) var(--light-y),rgba(240,142,88,.38) 0,rgba(216,103,57,.16) 18%,transparent 43%),linear-gradient(145deg,rgba(255,255,255,.18),rgba(197,83,48,.06));transition:background-position .2s ease}
+.avatar-stage:before{content:"";position:absolute;inset:8% 2% 1%;z-index:-3;border-radius:48% 52% 45% 55%;background:linear-gradient(135deg,#e3d9ca 0,#ede6db 53%,#d9c6ae 100%);box-shadow:inset 0 0 0 1px rgba(87,71,56,.08)}
+.avatar-stage:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(102deg,transparent 58%,rgba(255,184,129,.12) 72%,transparent 85%);mix-blend-mode:screen}
+.avatar-wrap{position:absolute;z-index:2;left:50%;bottom:-4%;width:min(78%,430px);transform-style:preserve-3d;transform:translate3d(calc(-50% + var(--avatar-x)),var(--avatar-y),45px) rotateX(var(--avatar-rx)) rotateY(var(--avatar-ry));transform-origin:50% 62%;transition:transform .18s cubic-bezier(.2,.75,.25,1);will-change:transform}
+.hero-avatar{display:block;width:100%;height:auto;filter:drop-shadow(0 28px 23px rgba(45,27,18,.22));animation:avatarFloat 5.4s ease-in-out infinite;transform-origin:50% 72%;will-change:transform}
+.avatar-shadow{position:absolute;z-index:1;left:23%;right:7%;bottom:3.5%;height:9%;border-radius:50%;background:rgba(50,30,19,.2);filter:blur(18px);transform:translateX(calc(var(--avatar-x) * -.16)) scaleX(.9)}
+.avatar-halo{position:absolute;z-index:-1;width:69%;aspect-ratio:1;right:2%;top:7%;border:1px solid rgba(197,83,48,.33);border-radius:49% 51% 45% 55%;transform:translate3d(calc(var(--avatar-x) * -.3),calc(var(--avatar-y) * -.25),0) rotate(-18deg);transition:transform .25s ease}
+.avatar-orbit{position:absolute;z-index:0;border:1px solid rgba(71,59,48,.18);border-radius:50%;pointer-events:none}
+.orbit-one{width:74%;height:28%;right:-6%;top:43%;transform:rotate(-18deg);animation:orbitPulse 6s ease-in-out infinite}
+.orbit-two{width:29%;aspect-ratio:1;left:5%;top:14%;border-color:rgba(197,83,48,.38);animation:orbitTurn 16s linear infinite}
+.orbit-two:before{content:"";position:absolute;width:9px;height:9px;right:6%;top:20%;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px rgba(197,83,48,.1)}
+.avatar-status{position:absolute;z-index:5;left:3%;top:10%;display:flex;align-items:center;gap:7px;padding:6px 9px;background:rgba(242,237,229,.78);backdrop-filter:blur(6px);font:8px monospace;letter-spacing:1px;color:#5b554d}
+.avatar-status i{width:6px;height:6px;border-radius:50%;background:#6d8f60;box-shadow:0 0 0 3px rgba(109,143,96,.15);animation:statusPulse 2.4s ease-in-out infinite}
+.avatar-stage .visual-label{z-index:5;bottom:12px;left:50%;color:rgba(72,62,53,.7)}
+.avatar-stage .visual-side{z-index:5;right:9px;top:36%;color:rgba(72,62,53,.7)}
+body.dark .avatar-stage:before{background:linear-gradient(145deg,#42382f,#2f2923 55%,#4a3428);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+body.dark .avatar-status{background:rgba(33,31,28,.72);color:#d4cabe}
+body.dark .avatar-stage .visual-label,body.dark .avatar-stage .visual-side{color:rgba(235,224,211,.68)}
+@keyframes avatarFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(.5deg)}}
+@keyframes orbitPulse{0%,100%{transform:rotate(-18deg) scale(1);opacity:.65}50%{transform:rotate(-14deg) scale(1.035);opacity:1}}
+@keyframes orbitTurn{to{transform:rotate(360deg)}}
+@keyframes statusPulse{50%{opacity:.42;transform:scale(.82)}}
+@media(max-width:900px){.avatar-stage{min-height:455px}.avatar-wrap{width:min(88%,410px)}}
+@media(max-width:640px){.avatar-stage{min-height:390px;max-width:390px;border-radius:48% 52% 44% 46%;margin-top:20px}.avatar-wrap{bottom:-8%;width:90%}.avatar-status{top:7%;left:5%}.avatar-stage .visual-side{display:none}.avatar-stage .visual-label{bottom:7px}}
+@media(pointer:coarse){.avatar-wrap{transition:none}.avatar-stage{--avatar-x:0px!important;--avatar-y:0px!important;--avatar-rx:0deg!important;--avatar-ry:0deg!important}}
+@media(prefers-reduced-motion:reduce){.avatar-wrap{transition:none}.hero-avatar,.avatar-orbit,.avatar-status i{animation:none}.avatar-stage{--avatar-x:0px!important;--avatar-y:0px!important;--avatar-rx:0deg!important;--avatar-ry:0deg!important}}
+
