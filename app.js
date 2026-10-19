@@ -6,10 +6,10 @@ const profile = {
 // 在此编辑文章。id 须保持唯一，body 中每一项为一个自然段。
 const articles = [
   {id:'how-to-use-skill',category:'AI产品',date:'2026.10.19',title:'Skill到底怎么用？',summary:'Skill 不是更长的提示词，而是把一件事的完整经验和 SOP 变成可重复调用的文件。',art:'notes',symbol:'AI',source:'小红书原创',externalUrl:'https://www.xiaohongshu.com/explore/6ac6589a000000001a021b0e?xsec_token=ABedx2PRFUgnbB-2O2Qni8QgEUkENVbT2yYPGtxZsRpbc%3D&xsec_source=pc_user'},
-  {id:'attention',category:'思考',date:'2026.10.12',title:'把注意力，放回那些微小的事情',summary:'在匆忙的日常里，重新练习观察。那些容易被忽略的瞬间，也值得被认真对待。',art:'',symbol:'✳',body:['一天里有很多时刻不会留下记录。窗边的一束光，翻过一半的书，还有一杯渐渐变凉的茶。把目光停在这些地方，时间似乎也有了更清晰的轮廓。','记录可以从一件很小的事开始。今天看见了什么，哪句话让自己停了一下，哪一个问题还想继续追问。无需急着得到完整的答案。','给注意力留一点空白，就像给书页留一道边。偶尔写下几句话，过些时候再看，也许会发现新的线索。']},
-  {id:'white-space',category:'设计',date:'2026.10.08',title:'留白，是一种温柔的表达',summary:'关于页面里的呼吸感，以及为什么有时候，少一点会更好。',art:'design',symbol:'▧',body:['页面上每一处空白，都在改变阅读的节奏。标题与正文之间的距离，让读者有时间换一口气；段落之间的间隔，让新的想法获得自己的位置。','设计一个页面时，可以先放入最必要的内容。看清它们的关系，再决定字号、间距和颜色。每添一个元素，都问问自己，它给阅读带来了什么。','留白也有尺度。太松会让相关的信息彼此分离，太紧会让重点挤在一起。在不同宽度里读一遍，往往能找到更自然的平衡。']},
-  {id:'weekend',category:'生活',date:'2026.10.03',title:'一个不设计划的周末',summary:'散步、翻书、喝一杯咖啡。让生活偶尔离开待办清单。',art:'life',symbol:'◉',body:['试着给周末留出一段没有安排的时间。出门前不用选好目的地，沿着一条平时很少走的路，看看街角正在发生什么。','也可以留在家里，翻开一本搁置已久的书。读几页，停一会儿，不必给这次阅读设置进度。','忙碌的时候，我们习惯为每一小时找到用途。偶尔允许时间自然流过，或许能更清楚地知道，自己真正愿意把它花在哪里。']},
-  {id:'own-blog',category:'思考',date:'2026.09.26',title:'为什么还需要一个自己的博客',summary:'给想法一个安静的住处，让零散的记录慢慢连接起来。',art:'notes',symbol:'〰',body:['一个个人博客可以很小。几篇文章，一段介绍，一个持续更新的角落，已经足以承载一个人的兴趣。','独立整理文字，让人有机会重新决定内容之间的关系。过去的一个问题，可以在新的文章里得到补充；一段零散笔记，也可能慢慢长成一篇完整的记录。','从第一篇开始就好。选择一个想留下的念头，用自己的语言写清楚。网站可以逐步完善，文字也可以随着理解的变化继续修订。']}
+  {id:'agent-evaluation',category:'公众号',date:'2026.10.18',title:'Agent做出来以后怎么知道它真的好用',summary:'从结果与过程两类评测出发，聊聊怎样判断 Agent 的交付是否真的可靠、可用。',art:'',symbol:'✳',source:'微信公众号',externalUrl:'https://mp.weixin.qq.com/s/oQNpGCdIedQ4dJ_KQ5f90w'},
+  {id:'context-engineering',category:'公众号',date:'2026.10.13',title:'为什么你的 AI 总是“降智”？一文讲透上下文工程的五层架构',summary:'拆解上下文工程的五层架构，理解怎样为大模型提供准确、高密度的输入环境。',art:'design',symbol:'▧',source:'微信公众号',externalUrl:'https://mp.weixin.qq.com/s/iB57TpV_o5uPW_VNyqa5wA'},
+  {id:'ai-capabilities',category:'公众号',date:'2026.10.12',title:'现在的AI，到底强到了什么地步？（普通人能用它做什么）',summary:'从文字、代码到完整工作流，盘点普通人今天可以怎样把 AI 变成实用的工作助手。',art:'life',symbol:'◉',source:'微信公众号',externalUrl:'https://mp.weixin.qq.com/s/r8ogTmOgvjg2k0wd__nYwQ'},
+  {id:'ai-data-safety',category:'公众号',date:'2026.09.27',title:'AI 安全：你发给 ChatGPT、DeepSeek、豆包的数据，后来都去了哪里？',summary:'从日常使用场景出发，梳理发送给 AI 的数据可能如何流转，以及应当注意的隐私边界。',art:'notes',symbol:'〰',source:'微信公众号',externalUrl:'https://mp.weixin.qq.com/s/hcgnvLZwQNycY_Syoxj0pw'}
 ];
 const $ = s => document.querySelector(s);
 const escapeHTML = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
