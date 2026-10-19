@@ -31,7 +31,8 @@ projects.forEach((project,index)=>{
   dot.type='button';dot.dataset.index=index;dot.setAttribute('role','tab');dot.setAttribute('aria-label',`查看项目 ${index+1}：${project.name}`);
   projectDots.appendChild(dot);
 });
-function showProject(next,announce=true){
+function showProject(next,announce=true,animate=true){
+  const previousIndex=projectIndex;
   projectIndex=(next+projects.length)%projects.length;
   const project=projects[projectIndex];
   projectCard.href=project.url;
@@ -40,9 +41,14 @@ function showProject(next,announce=true){
   [...projectDots.children].forEach((dot,index)=>{const active=index===projectIndex;dot.classList.toggle('active',active);dot.setAttribute('aria-selected',String(active));dot.tabIndex=active?0:-1;});
   $('#project-status').textContent=`${String(projectIndex+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
   if(announce) projectCarousel.setAttribute('aria-label',`GitHub 精选项目，第 ${projectIndex+1} 个，共 ${projects.length} 个`);
+  if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const forward=(projectIndex-previousIndex+projects.length)%projects.length;
+    const offset=forward===projects.length-1?-18:18;
+    projectCard.animate([{opacity:.15,transform:`translateX(${offset}px)`},{opacity:1,transform:'translateX(0)'}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)'});
+  }
 }
 function stopProjectTimer(){if(projectTimer){clearInterval(projectTimer);projectTimer=null;}}
-function startProjectTimer(){stopProjectTimer();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)projectTimer=setInterval(()=>showProject(projectIndex+1,false),5500);}
+function startProjectTimer(){stopProjectTimer();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)projectTimer=setInterval(()=>showProject(projectIndex+1,false),6800);}
 function moveProject(step){showProject(projectIndex+step);startProjectTimer();}
 $('#project-prev').addEventListener('click',()=>moveProject(-1));
 $('#project-next').addEventListener('click',()=>moveProject(1));
@@ -57,7 +63,7 @@ projectCarousel.addEventListener('pointerup',event=>{if(pointerStart===null)retu
 projectCarousel.addEventListener('pointercancel',()=>{pointerStart=null;projectSwiped=false;});
 projectCard.addEventListener('click',event=>{if(projectSwiped){event.preventDefault();projectSwiped=false;}});
 document.addEventListener('visibilitychange',()=>document.hidden?stopProjectTimer():startProjectTimer());
-showProject(0,false);startProjectTimer();
+showProject(0,false,false);startProjectTimer();
 let category = '全部';
 function render(){
   const query = $('#search').value.trim().toLowerCase();

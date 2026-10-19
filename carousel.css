@@ -1,5 +1,6 @@
 .project-carousel {
   position: relative;
+  touch-action: pan-y;
 }
 
 .project-carousel:focus {
@@ -12,8 +13,11 @@
 }
 
 .project {
-  transition: opacity .25s ease;
+  will-change: opacity, transform;
 }
+
+.project .mini-browser { transform: rotate(-1.1deg); }
+.project:hover .mini-browser { transform: rotate(0) translateY(-2px); }
 
 .project-preview {
   position: relative;
@@ -28,7 +32,7 @@
   bottom: -90px;
   border: 1px solid currentColor;
   border-radius: 50%;
-  opacity: .13;
+  opacity: .08;
 }
 
 .project-preview.theme-prompter { background: #d9ddd5; }
@@ -68,7 +72,7 @@
   inset: 7px 0 auto;
   height: 2px;
   background: var(--line);
-  transition: background .2s, transform .2s;
+  transition: background .35s ease, transform .35s ease;
 }
 
 .project-dots button.active::before {
@@ -94,12 +98,13 @@
   background: transparent;
   font-size: 16px;
   line-height: 1;
-  transition: background .2s, color .2s;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
 }
 
 .project-arrows button:hover {
   color: var(--bg);
   background: var(--text);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 640px) {
