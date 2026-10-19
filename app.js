@@ -13,6 +13,51 @@ const articles = [
 ];
 const $ = s => document.querySelector(s);
 const escapeHTML = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const projects = [
+  {name:'website',label:'PERSONAL WEBSITE',title:'一个属于自己的互联网角落',description:'个人博客网站，连接作品、文章与日常探索，支持分类搜索、深浅主题和响应式布局。',url:'https://github.com/zhang1845/website',kicker:'HELLO, WORLD.',preview:'张力夫.',subtitle:'AI 产品经理 · Agent · 工作流',symbol:'✳',caption:'DESIGN & DEVELOPMENT · 2026',tags:['JavaScript','响应式设计','个人网站'],theme:'personal'},
+  {name:'teleprompter-local',label:'LOCAL TELEPROMPTER',title:'从容提词器，让镜头表达更自然',description:'一款在本地运行的中文提词工具，支持镜像、调速、倒计时和本地录音。',url:'https://github.com/zhang1845/teleprompter-local',kicker:'READY / RECORD',preview:'从容',subtitle:'提词 · 调速 · 本地录音',symbol:'▶',caption:'VIDEO TOOL · LOCAL FIRST',tags:['HTML','本地工具','视频创作'],theme:'prompter'},
+  {name:'comparison-ai',label:'MULTI-MODEL ARENA',title:'五席，让五个模型同时回答',description:'输入一条问题，让五个模型并排作答，在同一个界面里快速比较不同模型的思路。',url:'https://github.com/zhang1845/comparison-ai',kicker:'ONE QUESTION / FIVE ANSWERS',preview:'五席',subtitle:'多模型 · 并排对比 · 快速判断',symbol:'⑤',caption:'AI PRODUCT · TYPESCRIPT',tags:['TypeScript','AI 产品','模型对比'],theme:'comparison'},
+  {name:'huya',label:'LIVE LANDING PAGE',title:'虎牙直播主题互动落地页',description:'使用 HTML、CSS、JavaScript、GSAP 和 Swiper 构建的响应式直播主题页面。',url:'https://github.com/zhang1845/huya',kicker:'LIVE / NOW',preview:'虎牙',subtitle:'直播 · 动效 · 响应式页面',symbol:'◉',caption:'MOTION & INTERACTION · 2026',tags:['CSS','GSAP','Swiper'],theme:'live'}
+];
+let projectIndex = 0;
+let projectTimer = null;
+let pointerStart = null;
+let projectSwiped = false;
+const projectCard = $('#project-card');
+const projectDots = $('#project-dots');
+const projectCarousel = $('#project-carousel');
+projects.forEach((project,index)=>{
+  const dot=document.createElement('button');
+  dot.type='button';dot.dataset.index=index;dot.setAttribute('role','tab');dot.setAttribute('aria-label',`查看项目 ${index+1}：${project.name}`);
+  projectDots.appendChild(dot);
+});
+function showProject(next,announce=true){
+  projectIndex=(next+projects.length)%projects.length;
+  const project=projects[projectIndex];
+  projectCard.href=project.url;
+  projectCard.setAttribute('aria-label',`${project.title}，在 GitHub 查看项目`);
+  projectCard.innerHTML=`<div class="project-preview theme-${escapeHTML(project.theme)}" aria-hidden="true"><div class="mini-browser"><div class="mini-top"><span>● ● ●</span><span>${escapeHTML(project.name)} / github</span></div><div class="mini-content"><div><span class="mini-kicker">${escapeHTML(project.kicker)}</span><strong>${escapeHTML(project.preview)}</strong><small>${escapeHTML(project.subtitle)}</small><span class="mini-button">EXPLORE ↗</span></div><div class="mini-sculpture">${escapeHTML(project.symbol)}</div></div></div><span class="preview-caption">${escapeHTML(project.caption)}</span></div><div class="project-info"><div class="project-meta">${String(projectIndex+1).padStart(2,'0')} / ${escapeHTML(project.label)} <span>↗</span></div><h3>${escapeHTML(project.title)}</h3><p>${escapeHTML(project.description)}</p><div class="project-tags">${project.tags.map(tag=>`<span>${escapeHTML(tag)}</span>`).join('')}</div><span class="project-cta">查看项目源码 ↗</span></div>`;
+  [...projectDots.children].forEach((dot,index)=>{const active=index===projectIndex;dot.classList.toggle('active',active);dot.setAttribute('aria-selected',String(active));dot.tabIndex=active?0:-1;});
+  $('#project-status').textContent=`${String(projectIndex+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
+  if(announce) projectCarousel.setAttribute('aria-label',`GitHub 精选项目，第 ${projectIndex+1} 个，共 ${projects.length} 个`);
+}
+function stopProjectTimer(){if(projectTimer){clearInterval(projectTimer);projectTimer=null;}}
+function startProjectTimer(){stopProjectTimer();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)projectTimer=setInterval(()=>showProject(projectIndex+1,false),5500);}
+function moveProject(step){showProject(projectIndex+step);startProjectTimer();}
+$('#project-prev').addEventListener('click',()=>moveProject(-1));
+$('#project-next').addEventListener('click',()=>moveProject(1));
+projectDots.addEventListener('click',event=>{const dot=event.target.closest('button');if(!dot)return;showProject(Number(dot.dataset.index));startProjectTimer();});
+projectCarousel.addEventListener('mouseenter',stopProjectTimer);
+projectCarousel.addEventListener('mouseleave',startProjectTimer);
+projectCarousel.addEventListener('focusin',stopProjectTimer);
+projectCarousel.addEventListener('focusout',event=>{if(!projectCarousel.contains(event.relatedTarget))startProjectTimer();});
+projectCarousel.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){event.preventDefault();moveProject(-1);}if(event.key==='ArrowRight'){event.preventDefault();moveProject(1);}});
+projectCarousel.addEventListener('pointerdown',event=>{pointerStart=event.clientX;projectSwiped=false;});
+projectCarousel.addEventListener('pointerup',event=>{if(pointerStart===null)return;const distance=event.clientX-pointerStart;pointerStart=null;if(Math.abs(distance)>50){projectSwiped=true;moveProject(distance<0?1:-1);}});
+projectCarousel.addEventListener('pointercancel',()=>{pointerStart=null;projectSwiped=false;});
+projectCard.addEventListener('click',event=>{if(projectSwiped){event.preventDefault();projectSwiped=false;}});
+document.addEventListener('visibilitychange',()=>document.hidden?stopProjectTimer():startProjectTimer());
+showProject(0,false);startProjectTimer();
 let category = '全部';
 function render(){
   const query = $('#search').value.trim().toLowerCase();

@@ -1,0 +1,117 @@
+.project-carousel {
+  position: relative;
+}
+
+.project-carousel:focus {
+  outline: none;
+}
+
+.project-carousel:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 8px;
+}
+
+.project {
+  transition: opacity .25s ease;
+}
+
+.project-preview {
+  position: relative;
+}
+
+.project-preview::after {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -90px;
+  bottom: -90px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: .13;
+}
+
+.project-preview.theme-prompter { background: #d9ddd5; }
+.project-preview.theme-comparison { background: #ded8ce; }
+.project-preview.theme-live { background: #e4d4c9; }
+.theme-prompter .mini-sculpture { color: #667569; }
+.theme-comparison .mini-sculpture { color: #956f48; }
+.theme-live .mini-sculpture { color: #cf5c35; }
+
+.project-controls {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 24px;
+  align-items: center;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-dots button {
+  position: relative;
+  width: 32px;
+  height: 2px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+}
+
+.project-dots button::before {
+  content: '';
+  position: absolute;
+  inset: 7px 0 auto;
+  height: 2px;
+  background: var(--line);
+  transition: background .2s, transform .2s;
+}
+
+.project-dots button.active::before {
+  background: var(--accent);
+  transform: scaleY(2);
+}
+
+.project-status {
+  color: var(--muted);
+  font: 9px monospace;
+  letter-spacing: 1.5px;
+}
+
+.project-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.project-arrows button {
+  width: 40px;
+  height: 34px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-size: 16px;
+  line-height: 1;
+  transition: background .2s, color .2s;
+}
+
+.project-arrows button:hover {
+  color: var(--bg);
+  background: var(--text);
+}
+
+@media (max-width: 640px) {
+  .project-controls { gap: 14px; }
+  .project-dots { gap: 6px; }
+  .project-dots button { width: 22px; }
+  .project-status { font-size: 8px; }
+  .project-arrows button { width: 36px; }
+  .project-preview::after {
+    width: 120px;
+    height: 120px;
+    right: -60px;
+    bottom: -60px;
+  }
+}
