@@ -35,7 +35,8 @@ reader.addEventListener('close',()=>{if(location.hash.startsWith('#article/'))hi
 reader.addEventListener('click',event=>{if(event.target!==reader)return;const r=reader.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)reader.close();});
 window.addEventListener('hashchange',route);
 try{document.body.classList.toggle('dark',localStorage.getItem('personal-blog-theme')==='dark');}catch{}
-$('#theme').addEventListener('click',()=>{const dark=document.body.classList.toggle('dark');try{localStorage.setItem('personal-blog-theme',dark?'dark':'light');}catch{}});
+$('#theme').setAttribute('aria-pressed', String(document.body.classList.contains('dark')));
+$('#theme').addEventListener('click',()=>{const dark=document.body.classList.toggle('dark');$('#theme').setAttribute('aria-pressed',String(dark));try{localStorage.setItem('personal-blog-theme',dark?'dark':'light');}catch{}});
 if(profile.email){$('#email-link').href='mailto:'+profile.email;$('#email-link').hidden=false;$('#email-placeholder').hidden=true;}
 $('.filters small').textContent=String(articles.length).padStart(2,'0');
 $('#year').textContent=new Date().getFullYear();
