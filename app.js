@@ -21,7 +21,7 @@ const projects = [
 ];
 let projectIndex = 0;
 let projectTimer = null;
-let pointerStart = null;
+let projectPointer = null;
 let projectSwiped = false;
 const projectCard = $('#project-card');
 const projectDots = $('#project-dots');
@@ -58,9 +58,40 @@ projectCarousel.addEventListener('mouseleave',startProjectTimer);
 projectCarousel.addEventListener('focusin',stopProjectTimer);
 projectCarousel.addEventListener('focusout',event=>{if(!projectCarousel.contains(event.relatedTarget))startProjectTimer();});
 projectCarousel.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){event.preventDefault();moveProject(-1);}if(event.key==='ArrowRight'){event.preventDefault();moveProject(1);}});
-projectCarousel.addEventListener('pointerdown',event=>{pointerStart=event.clientX;projectSwiped=false;});
-projectCarousel.addEventListener('pointerup',event=>{if(pointerStart===null)return;const distance=event.clientX-pointerStart;pointerStart=null;if(Math.abs(distance)>50){projectSwiped=true;moveProject(distance<0?1:-1);}});
-projectCarousel.addEventListener('pointercancel',()=>{pointerStart=null;projectSwiped=false;});
+projectCard.draggable=false;
+projectCard.addEventListener('dragstart',event=>event.preventDefault());
+projectCarousel.addEventListener('pointerdown',event=>{
+  if(event.button!==0||event.target.closest('.project-controls'))return;
+  projectPointer={id:event.pointerId,x:event.clientX,y:event.clientY,distance:0,dragging:false};
+  projectSwiped=false;
+  stopProjectTimer();
+  try{projectCarousel.setPointerCapture?.(event.pointerId);}catch{}
+});
+projectCarousel.addEventListener('pointermove',event=>{
+  if(!projectPointer||event.pointerId!==projectPointer.id)return;
+  const dx=event.clientX-projectPointer.x;
+  const dy=event.clientY-projectPointer.y;
+  if(!projectPointer.dragging&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy))projectPointer.dragging=true;
+  if(!projectPointer.dragging)return;
+  projectPointer.distance=dx;
+  if(event.cancelable)event.preventDefault();
+  const offset=Math.max(-90,Math.min(90,dx*.45));
+  projectCard.style.transform=`translateX(${offset}px)`;
+  projectCard.style.opacity=String(Math.max(.68,1-Math.abs(offset)/280));
+});
+function finishProjectDrag(event,cancelled=false){
+  if(!projectPointer||event.pointerId!==projectPointer.id)return;
+  const distance=projectPointer.distance;
+  const wasDragging=projectPointer.dragging;
+  projectPointer=null;
+  projectCard.style.transform='';
+  projectCard.style.opacity='';
+  if(wasDragging&&Math.abs(distance)>48&&!cancelled){projectSwiped=true;moveProject(distance<0?1:-1);}
+  else if(wasDragging&&!matchMedia('(prefers-reduced-motion: reduce)').matches)projectCard.animate([{transform:`translateX(${Math.max(-90,Math.min(90,distance*.45))}px)`},{transform:'translateX(0)'}],{duration:300,easing:'cubic-bezier(.22,1,.36,1)'});
+  startProjectTimer();
+}
+projectCarousel.addEventListener('pointerup',event=>finishProjectDrag(event));
+projectCarousel.addEventListener('pointercancel',event=>finishProjectDrag(event,true));
 projectCard.addEventListener('click',event=>{if(projectSwiped){event.preventDefault();projectSwiped=false;}});
 document.addEventListener('visibilitychange',()=>document.hidden?stopProjectTimer():startProjectTimer());
 showProject(0,false,false);startProjectTimer();
