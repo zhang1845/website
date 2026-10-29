@@ -158,3 +158,24 @@
     bottom: -60px;
   }
 }
+
+/* Product screenshots keep their own colors in both site themes. */
+.project-preview.theme-aivideo { background: #e5ddd0; }
+.project-preview.theme-agent { background: #dce0d7; }
+.product-preview { padding: 30px 24px 24px; }
+.product-preview .mini-browser { background: #faf7f1; color: #24231f; }
+.product-preview .mini-top { color: #79746c; border-color: #d8d1c7; }
+.product-screenshot { display: block; width: 100%; height: auto; }
+.product-preview .preview-caption { letter-spacing: 1.2px; }
+.product-viewer { width: min(1180px, 94vw); max-height: 92vh; padding: 24px 30px; }
+.product-viewer h2 { font-size: 28px; margin: 18px 0 10px; }
+#product-description { max-width: 780px; color: var(--muted); font-size: 13px; }
+.product-image-wrap { border: 1px solid var(--line); background: #fff; }
+#product-image { display: block; width: 100%; height: auto; }
+#product-note { margin: 14px 0 0; font-size: 11px; color: var(--muted); }
+@media (max-width: 640px) {
+  .product-preview { padding: 24px 16px 20px; }
+  .product-viewer { padding: 16px; }
+  .product-viewer h2 { font-size: 23px; }
+  .product-preview .preview-caption { font-size: 7px; letter-spacing: .7px; }
+}

@@ -14,6 +14,8 @@ const articles = [
 const $ = s => document.querySelector(s);
 const escapeHTML = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const projects = [
+  {name:'AIVideo',label:'AI VIDEO STUDIO',title:'AIVideo，让视频有话可说',description:'从导入原片、AI 解说草稿到人工修改、中文配音与字幕，在本地完成视频解说创作。',image:'assets/projects/aivideo-home.webp',imageAlt:'AIVideo Studio 真实首页，展示创作入口、解说流程与模板',caption:'AIVIDEO STUDIO · PRODUCT INTERFACE',tags:['AI 视频解说','配音字幕','本地创作'],theme:'aivideo',detail:'导入原视频后，通过抽帧理解生成解说草稿，逐段核对并修改，再生成中文配音、字幕与 MP4。支持手写脚本、解说模板和音色选择。',note:'本地运行 · macOS / Windows · AI 草稿需配置模型服务'},
+  {name:'personal-agent',label:'PERSONAL AGENT',title:'我的 Agent，把日常安排在一起',description:'把日程、待办、项目资料与个人记忆放进一个工作台，通过对话整理安排，确认后执行。',image:'assets/projects/personal-agent.webp',imageAlt:'个人 Agent 真实工作台，展示日程、待办与工作台导航',caption:'PERSONAL AGENT · PRODUCT INTERFACE',tags:['个人 Agent','日程与待办','资料与记忆'],theme:'agent',detail:'在同一个工作台管理日程、任务、项目资料和记忆。明确指令可离线使用，复杂请求可接入模型，由助手生成操作草案，确认后再保存。',note:'本地运行 · macOS / Windows · 截图中的日程为演示数据'},
   {name:'website',label:'PERSONAL WEBSITE',title:'一个属于自己的互联网角落',description:'个人博客网站，连接作品、文章与日常探索，支持分类搜索、深浅主题和响应式布局。',url:'https://github.com/zhang1845/website',kicker:'HELLO, WORLD.',preview:'张力夫.',subtitle:'AI 产品经理 · Agent · 工作流',symbol:'✳',caption:'DESIGN & DEVELOPMENT · 2026',tags:['JavaScript','响应式设计','个人网站'],theme:'personal'},
   {name:'teleprompter-local',label:'LOCAL TELEPROMPTER',title:'从容提词器，让镜头表达更自然',description:'一款在本地运行的中文提词工具，支持镜像、调速、倒计时和本地录音。',url:'https://github.com/zhang1845/teleprompter-local',kicker:'READY / RECORD',preview:'从容',subtitle:'提词 · 调速 · 本地录音',symbol:'▶',caption:'VIDEO TOOL · LOCAL FIRST',tags:['HTML','本地工具','视频创作'],theme:'prompter'},
   {name:'comparison-ai',label:'MULTI-MODEL ARENA',title:'五席，让五个模型同时回答',description:'输入一条问题，让五个模型并排作答，在同一个界面里快速比较不同模型的思路。',url:'https://github.com/zhang1845/comparison-ai',kicker:'ONE QUESTION / FIVE ANSWERS',preview:'五席',subtitle:'多模型 · 并排对比 · 快速判断',symbol:'⑤',caption:'AI PRODUCT · TYPESCRIPT',tags:['TypeScript','AI 产品','模型对比'],theme:'comparison'},
@@ -35,9 +37,12 @@ function showProject(next,announce=true,animate=true){
   const previousIndex=projectIndex;
   projectIndex=(next+projects.length)%projects.length;
   const project=projects[projectIndex];
-  projectCard.href=project.url;
-  projectCard.setAttribute('aria-label',`${project.title}，在 GitHub 查看项目`);
-  projectCard.innerHTML=`<div class="project-preview theme-${escapeHTML(project.theme)}" aria-hidden="true"><div class="mini-browser"><div class="mini-top"><span>● ● ●</span><span>${escapeHTML(project.name)} / github</span></div><div class="mini-content"><div><span class="mini-kicker">${escapeHTML(project.kicker)}</span><strong>${escapeHTML(project.preview)}</strong><small>${escapeHTML(project.subtitle)}</small><span class="mini-button">EXPLORE ↗</span></div><div class="mini-sculpture">${escapeHTML(project.symbol)}</div></div></div><span class="preview-caption">${escapeHTML(project.caption)}</span></div><div class="project-info"><div class="project-meta">${String(projectIndex+1).padStart(2,'0')} / ${escapeHTML(project.label)} <span>↗</span></div><h3>${escapeHTML(project.title)}</h3><p>${escapeHTML(project.description)}</p><div class="project-tags">${project.tags.map(tag=>`<span>${escapeHTML(tag)}</span>`).join('')}</div><span class="project-cta">查看项目源码 ↗</span></div>`;
+  projectCard.href=project.image || project.url;
+  projectCard.setAttribute('aria-label',`${project.title}，${project.image ? '查看产品页面截图' : '在 GitHub 查看项目'}`);
+  const preview = project.image
+    ? `<div class="project-preview product-preview theme-${escapeHTML(project.theme)}"><div class="mini-browser"><div class="mini-top"><span aria-hidden="true">● ● ●</span><span>${escapeHTML(project.name)} / PRODUCT</span></div><img class="product-screenshot" src="${escapeHTML(project.image)}" alt="${escapeHTML(project.imageAlt)}" width="1440" height="1000" decoding="async" draggable="false"></div><span class="preview-caption">${escapeHTML(project.caption)}</span></div>`
+    : `<div class="project-preview theme-${escapeHTML(project.theme)}" aria-hidden="true"><div class="mini-browser"><div class="mini-top"><span>● ● ●</span><span>${escapeHTML(project.name)} / github</span></div><div class="mini-content"><div><span class="mini-kicker">${escapeHTML(project.kicker)}</span><strong>${escapeHTML(project.preview)}</strong><small>${escapeHTML(project.subtitle)}</small><span class="mini-button">EXPLORE ↗</span></div><div class="mini-sculpture">${escapeHTML(project.symbol)}</div></div></div><span class="preview-caption">${escapeHTML(project.caption)}</span></div>`;
+  projectCard.innerHTML=`${preview}<div class="project-info"><div class="project-meta">${String(projectIndex+1).padStart(2,'0')} / ${escapeHTML(project.label)} <span>↗</span></div><h3>${escapeHTML(project.title)}</h3><p>${escapeHTML(project.description)}</p><div class="project-tags">${project.tags.map(tag=>`<span>${escapeHTML(tag)}</span>`).join('')}</div><span class="project-cta">${project.image ? '查看产品页面 ↗' : '查看项目源码 ↗'}</span></div>`;
   [...projectDots.children].forEach((dot,index)=>{const active=index===projectIndex;dot.classList.toggle('active',active);dot.setAttribute('aria-selected',String(active));dot.tabIndex=active?0:-1;});
   $('#project-status').textContent=`${String(projectIndex+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
   if(announce) projectCarousel.setAttribute('aria-label',`GitHub 精选项目，第 ${projectIndex+1} 个，共 ${projects.length} 个`);
@@ -48,7 +53,7 @@ function showProject(next,announce=true,animate=true){
   }
 }
 function stopProjectTimer(){if(projectTimer){clearInterval(projectTimer);projectTimer=null;}}
-function startProjectTimer(){stopProjectTimer();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)projectTimer=setInterval(()=>showProject(projectIndex+1,false),6800);}
+function startProjectTimer(){stopProjectTimer();if(!document.hidden&&!$('#product-viewer').open&&!projectCarousel.matches(':hover')&&!projectCarousel.contains(document.activeElement)&&!matchMedia('(prefers-reduced-motion: reduce)').matches)projectTimer=setInterval(()=>showProject(projectIndex+1,false),6800);}
 function moveProject(step){showProject(projectIndex+step);startProjectTimer();}
 $('#project-prev').addEventListener('click',()=>moveProject(-1));
 $('#project-next').addEventListener('click',()=>moveProject(1));
@@ -65,13 +70,15 @@ projectCarousel.addEventListener('pointerdown',event=>{
   projectPointer={id:event.pointerId,x:event.clientX,y:event.clientY,distance:0,dragging:false};
   projectSwiped=false;
   stopProjectTimer();
-  try{projectCarousel.setPointerCapture?.(event.pointerId);}catch{}
 });
 projectCarousel.addEventListener('pointermove',event=>{
   if(!projectPointer||event.pointerId!==projectPointer.id)return;
   const dx=event.clientX-projectPointer.x;
   const dy=event.clientY-projectPointer.y;
-  if(!projectPointer.dragging&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy))projectPointer.dragging=true;
+  if(!projectPointer.dragging&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)){
+    projectPointer.dragging=true;
+    try{projectCarousel.setPointerCapture?.(event.pointerId);}catch{}
+  }
   if(!projectPointer.dragging)return;
   projectPointer.distance=dx;
   if(event.cancelable)event.preventDefault();
@@ -92,7 +99,32 @@ function finishProjectDrag(event,cancelled=false){
 }
 projectCarousel.addEventListener('pointerup',event=>finishProjectDrag(event));
 projectCarousel.addEventListener('pointercancel',event=>finishProjectDrag(event,true));
-projectCard.addEventListener('click',event=>{if(projectSwiped){event.preventDefault();projectSwiped=false;}});
+const productViewer = $('#product-viewer');
+let productOpener = null;
+projectCard.addEventListener('click',event=>{
+  if(projectSwiped){event.preventDefault();projectSwiped=false;return;}
+  const project = projects[projectIndex];
+  if(!project.image)return;
+  event.preventDefault();
+  stopProjectTimer();
+  productOpener = document.activeElement;
+  $('#product-title').textContent = project.title;
+  $('#product-description').textContent = project.detail;
+  $('#product-note').textContent = project.note;
+  $('#product-image').src = project.image;
+  $('#product-image').alt = project.imageAlt;
+  productViewer.showModal();
+});
+$('#product-close').addEventListener('click',()=>productViewer.close());
+productViewer.addEventListener('click',event=>{
+  if(event.target!==productViewer)return;
+  const r=productViewer.getBoundingClientRect();
+  if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)productViewer.close();
+});
+productViewer.addEventListener('close',()=>{
+  if(productOpener instanceof HTMLElement)productOpener.focus();
+  if(!projectCarousel.matches(':hover')&&!projectCarousel.contains(document.activeElement))startProjectTimer();
+});
 document.addEventListener('visibilitychange',()=>document.hidden?stopProjectTimer():startProjectTimer());
 showProject(0,false,false);startProjectTimer();
 let category = '全部';
