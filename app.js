@@ -16,6 +16,7 @@ const escapeHTML = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;
 const projects = [
   {name:'AIVideo',url:'https://github.com/zhang1845/AIVideo',label:'AI VIDEO STUDIO',title:'AIVideo，让视频有话可说',description:'从导入原片、AI 解说草稿到人工修改、中文配音与字幕，在本地完成视频解说创作。',image:'assets/projects/aivideo-home.webp',imageAlt:'AIVideo Studio 真实首页，展示创作入口、解说流程与模板',caption:'AIVIDEO STUDIO · PRODUCT INTERFACE',tags:['AI 视频解说','配音字幕','本地创作'],theme:'aivideo',detail:'导入原视频后，通过抽帧理解生成解说草稿，逐段核对并修改，再生成中文配音、字幕与 MP4。支持手写脚本、解说模板和音色选择。',note:'本地运行 · macOS / Windows · AI 草稿需配置模型服务'},
   {name:'personal-agent',url:'https://github.com/zhang1845/personal-agent',label:'PERSONAL AGENT',title:'我的 Agent，把日常安排在一起',description:'把日程、待办、项目资料与个人记忆放进一个工作台，通过对话整理安排，确认后执行。',image:'assets/projects/personal-agent.webp',imageAlt:'个人 Agent 真实工作台，展示日程、待办与工作台导航',caption:'PERSONAL AGENT · PRODUCT INTERFACE',tags:['个人 Agent','日程与待办','资料与记忆'],theme:'agent',detail:'在同一个工作台管理日程、任务、项目资料和记忆。明确指令可离线使用，复杂请求可接入模型，由助手生成操作草案，确认后再保存。',note:'本地运行 · macOS / Windows · 截图中的日程为演示数据'},
+  {name:'veil-archive',displayName:'雾幕档案',url:'https://github.com/zhang1845/veil-archive',demoUrl:'https://myapp-demo-d5gu1lkeq44b2c5fb-1514835535.tcloudbaseapp.com/veil-archive/',label:'THE VEIL ARCHIVE',title:'雾幕档案，在迷局里寻找真相',description:'一个人的悬疑推理体验。选择身份、调查线索、核对证词，在层层秘密中还原真相。',image:'assets/projects/veil-archive.webp',imageAlt:'雾幕档案真实首页，展示雾夜悬疑主题与剧本档案入口',caption:'THE VEIL ARCHIVE · PRODUCT INTERFACE',tags:['单人推理','AI 剧本创作','互动叙事'],theme:'veil',detail:'基于 AI-Script-Game 改编的单人悬疑推理项目，包含剧本选择、角色阅读、搜证与终局结算，以及 AI 剧本创作工作台。',note:'网页版试玩 · 实时 AI 对话是否启用以试玩版本为准'},
   {name:'website',label:'PERSONAL WEBSITE',title:'一个属于自己的互联网角落',description:'个人博客网站，连接作品、文章与日常探索，支持分类搜索、深浅主题和响应式布局。',url:'https://github.com/zhang1845/website',kicker:'HELLO, WORLD.',preview:'张力夫.',subtitle:'AI 产品经理 · Agent · 工作流',symbol:'✳',caption:'DESIGN & DEVELOPMENT · 2026',tags:['JavaScript','响应式设计','个人网站'],theme:'personal'},
 ];
 let projectIndex = 0;
@@ -38,7 +39,9 @@ function showProject(next,announce=true,animate=true){
   const sourceLink = $('#project-source');
   sourceLink.hidden = !project.image;
   sourceLink.href = project.url;
-  sourceLink.textContent = `${project.name === 'AIVideo' ? 'AIVideo' : '个人 Agent'} · GitHub 源码 ↗`;
+  $('#project-demo').hidden = !project.demoUrl;
+  if(project.demoUrl) $('#project-demo').href = project.demoUrl;
+  sourceLink.textContent = `${project.displayName || (project.name === 'personal-agent' ? '个人 Agent' : project.name)} · GitHub 源码 ↗`;
   projectCard.setAttribute('aria-label',`${project.title}，${project.image ? '查看产品页面截图' : '在 GitHub 查看项目'}`);
   const preview = project.image
     ? `<div class="project-preview product-preview theme-${escapeHTML(project.theme)}"><div class="mini-browser"><div class="mini-top"><span aria-hidden="true">● ● ●</span><span>${escapeHTML(project.name)} / PRODUCT</span></div><img class="product-screenshot" src="${escapeHTML(project.image)}" alt="${escapeHTML(project.imageAlt)}" width="1440" height="1000" decoding="async" draggable="false"></div><span class="preview-caption">${escapeHTML(project.caption)}</span></div>`
@@ -113,6 +116,8 @@ projectCard.addEventListener('click',event=>{
   $('#product-description').textContent = project.detail;
   $('#product-note').textContent = project.note;
   $('#product-source').href = project.url;
+  $('#product-demo').hidden = !project.demoUrl;
+  if(project.demoUrl) $('#product-demo').href = project.demoUrl;
   $('#product-image').src = project.image;
   $('#product-image').alt = project.imageAlt;
   productViewer.showModal();

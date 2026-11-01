@@ -181,3 +181,6 @@
 }
 
 .product-source { display: inline-block; margin-top: 16px; color: var(--accent); }
+
+.project-preview.theme-veil { background: #d7dad3; }
+.product-demo { margin-left: 24px; }
