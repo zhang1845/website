@@ -179,3 +179,5 @@
   .product-viewer h2 { font-size: 23px; }
   .product-preview .preview-caption { font-size: 7px; letter-spacing: .7px; }
 }
+
+.product-source { display: inline-block; margin-top: 16px; color: var(--accent); }
